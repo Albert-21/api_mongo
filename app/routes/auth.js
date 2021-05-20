@@ -14,13 +14,11 @@ const schemaLogin = Joi.object({
 
 const schemasigup = Joi.object({
     username: Joi.string().min(6).max(255).required(),
-    password: Joi.string().min(8).max(1024).required()
+    password: Joi.string().min(8).max(255).required()
 });
-
 
 router.post('/signup/', async (req, res) => {
     const {error} = schemasigup.validate(req.body)
-    console.log(req.body)
     if (error) {
         console.log(req.body)
         return res.status(400).json(
@@ -39,7 +37,7 @@ router.post('/signup/', async (req, res) => {
     const password = await bcrypt.hash(req.body.password, salt);
 
     const user = new User({
-        name: req.body.name,
+        username: req.body.username,
         password: password
     });
     try {
@@ -64,11 +62,6 @@ router.post('/login', async (req, res) => {
 
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) return res.status(400).json({error: 'contraseña no válida'})
-
-    res.json({
-        error: null,
-        data: 'exito bienvenido'
-    })
 
 
     // create token
