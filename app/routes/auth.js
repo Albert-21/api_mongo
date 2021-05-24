@@ -17,7 +17,7 @@ const schemasigup = Joi.object({
     password: Joi.string().min(8).max(255).required()
 });
 
-router.post('/signup/', async (req, res) => {
+router.post('/signup', async (req, res) => {
     const {error} = schemasigup.validate(req.body)
     if (error) {
         console.log(req.body)

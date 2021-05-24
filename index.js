@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
-const jwt = require('jsonwebtoken');
 require('dotenv').config()
 
 const app = express();
@@ -29,11 +28,13 @@ mongoose.connect(uri,
 // import routes
 const authRoutes = require('./app/routes/auth');
 const dashboadRoutes = require('./app/routes/dashboard.js');
+const notesRoutes = require('./app/routes/notes.js');
 const verifyToken = require('./app/routes/validate-token');
 // route middlewares
 app.use('/api/user', authRoutes);
 
 app.use('/api/dashboard', verifyToken, dashboadRoutes);
+app.use('/api/notes', verifyToken, notesRoutes);
 
 // iniciar server
 const PORT = process.env.PORT || 3001;
