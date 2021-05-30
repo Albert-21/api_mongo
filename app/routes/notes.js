@@ -18,9 +18,9 @@ router.post('/add', async(req, res) => {
         res.status(400).json({error})
     }
 })
-router.get('/findAll', async(req, res) => {
+router.post('/findAll', async(req, res) => {
     try {
-        const allNotes = await Note.find({});
+        const allNotes = await Note.find({"username":req.body.username});
         res.json({
             error: null,
             data: allNotes
@@ -44,10 +44,10 @@ router.get('/findOne', async(req, res) => {
 
 })
 
-router.delete('/delete', async(req, res) => {
-
+router.delete('/deleteNota/:id', async(req, res) => {
+    const id = req.params.id
     try {
-        const deleteNote = await Note.deleteOne({"_id": req.body._id});
+        const deleteNote = await Note.findOneAndDelete({ _id: id });
         res.json({
             error: null,
             data: deleteNote
